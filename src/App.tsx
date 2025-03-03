@@ -1,15 +1,16 @@
 
 import './App.css'
 import { Button } from '@heroui/react'
+import useRouteElements from './useRouteElements'
 
 function App() {
-
+  const routeElements = useRouteElements()
   return (
     <>
-      <h1 className='font-bold text-amber-300'>Tesst</h1>
-      <Button>Check</Button>
+      {routeElements}
     </>
   )
 }
 
 export default App
+
