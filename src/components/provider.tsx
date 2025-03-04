@@ -7,7 +7,7 @@ const AppContext = createContext<{
     setIsAuth: (value: boolean) => void
 }>({
     isAuth: false,
-    setIsAuth: (value: boolean) => { }
+    setIsAuth: () => { }
 })
 
 export const useAppContext = () => {

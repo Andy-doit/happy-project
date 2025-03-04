@@ -1,4 +1,4 @@
-"use client";
+
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,13 +33,12 @@ export default function Login() {
             const result = await loginMutation.mutateAsync(values);
             toast.success(result.payload.message);
             setIsAuth(true);
-            navigate("/"); // Chỉ chuyển hướng khi đăng nhập thành công
+            navigate("/");
         } catch (error: any) {
             handleErrorApi({
                 error,
                 setError: form.setError,
             });
-            // Không cần thêm logic ngăn chuyển hướng nữa vì nó chỉ xảy ra trong block try
         }
     }
 
@@ -101,7 +100,7 @@ export default function Login() {
                                 type="submit"
                                 className="w-full"
                                 variant="secondary"
-                                disabled={loginMutation.isPending} // Vô hiệu hóa nút khi đang gửi request
+                                disabled={loginMutation.isPending}
                             >
                                 {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}
                             </Button>
