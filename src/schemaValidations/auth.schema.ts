@@ -1,6 +1,7 @@
 
+import { RoleValues } from '@/app/constrants/type'
 import z from 'zod'
-import { RoleValues } from '../constrants/type'
+
 
 export const LoginBody = z
     .object({

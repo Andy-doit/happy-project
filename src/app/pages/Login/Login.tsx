@@ -2,25 +2,24 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 
-
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
 import { toast } from "sonner"
-import { Input } from "@/components/ui/input"
+import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema"
+import { useNavigate } from "react-router-dom"
+import { useLoginMutation } from "@/app/queries/useAuth"
+import { useAppContext } from "@/components/provider"
+import { handleErrorApi } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { LoginBody, LoginBodyType } from "@/app/schemaValidations/auth.schema"
-
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Label } from "@radix-ui/react-label"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 
 export default function Login() {
+    const navigate = useNavigate()
+    const { setIsAuth } = useAppContext()
+    const loginMutation = useLoginMutation()
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
         defaultValues: {
@@ -29,10 +28,19 @@ export default function Login() {
         },
     })
 
-    function onSubmit(data: z.infer<typeof LoginBody>) {
-        toast(
-            JSON.stringify(data, null, 2)
-        )
+    async function onSubmit(values: LoginBodyType) {
+        if (loginMutation.isPending) return
+        try {
+            const result = await loginMutation.mutateAsync(values)
+            toast(result.payload.message);
+            navigate('/')
+            setIsAuth(true)
+        } catch (error: any) {
+            handleErrorApi({
+                error,
+                setError: form.setError
+            })
+        }
     }
 
     return (
@@ -56,7 +64,7 @@ export default function Login() {
                                     <FormItem>
                                         <div className='grid gap-2'>
                                             <Label htmlFor='username'>Tên tài khoản</Label>
-                                            <Input id='username' type='username' placeholder='Tên tài khoản' required {...field} />
+                                            <Input id='username' type='text' placeholder='Tên tài khoản' required {...field} />
                                             <FormMessage />
                                         </div>
                                     </FormItem>
@@ -68,9 +76,7 @@ export default function Login() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className='grid gap-2'>
-                                            <div className='flex items-center'>
-                                                <Label htmlFor='password'>Password</Label>
-                                            </div>
+                                            <Label htmlFor='password'>Mật khẩu</Label>
                                             <Input id='password' type='password' placeholder="Nhập mật khẩu" required {...field} />
                                             <FormMessage />
                                         </div>
