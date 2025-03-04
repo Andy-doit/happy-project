@@ -37,6 +37,7 @@ export class EntityError extends HttpError {
 }
 
 
+
 const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, options?: CustomOptions) => {
     let body: FormData | string | undefined = undefined
     if (options?.body instanceof FormData) {
@@ -72,7 +73,19 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
 
     const payload: Response = await res.json()
     const data = { status: res.status, payload }
-
+    if (!res.ok) {
+        if (res.status === 422) {
+            throw new EntityError({
+                status: 422,
+                payload: payload as EntityErrorPayload,
+            });
+        } else {
+            throw new HttpError({
+                status: res.status,
+                payload,
+            });
+        }
+    }
 
     const normalizeUrl = normalizePath(url)
     if (normalizeUrl === 'api/auth/login') {

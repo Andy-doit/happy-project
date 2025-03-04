@@ -1,4 +1,4 @@
-
+import { Toaster } from "@/components/ui/sonner"
 import './App.css'
 
 import useRouteElements from './useRouteElements'
@@ -9,7 +9,7 @@ function App() {
     <>
 
       {routeElements}
-
+      <Toaster />
     </>
   )
 }
