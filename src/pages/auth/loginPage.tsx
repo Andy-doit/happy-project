@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/inputField";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useAuthStore } from "@/hooks/useAuth";
+import { useLogin } from "@/hooks/useAuth";
+
 
 export default function Login() {
     const navigate = useNavigate();
-    const { login } = useAuthStore();
+    const { handleLogin } = useLogin();
     const [isPending, setIsPending] = useState(false);
 
     const form = useForm<LoginBodyType>({
@@ -25,9 +26,8 @@ export default function Login() {
     async function onSubmit(values: LoginBodyType) {
         if (isPending) return;
         setIsPending(true);
-
         try {
-            await login(values, navigate);
+            await handleLogin(values, navigate);
         } catch (error) {
             console.error("Login failed:", error);
         } finally {
@@ -68,7 +68,7 @@ export default function Login() {
                                 type="submit"
                                 className="w-full"
                                 variant="secondary"
-                                disabled={isPending} // Dùng isPending thay cho loginMutation.isPending
+                                disabled={isPending}
                             >
                                 {isPending ? "Đang đăng nhập..." : "Đăng nhập"}
                             </Button>
