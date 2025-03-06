@@ -1,15 +1,11 @@
-import { Toaster } from "@/components/ui/sonner"
+
 import './App.css'
-
-import useRouteElements from './useRouteElements'
-
+import { RouterProvider } from "react-router-dom"
+import { router } from "./routes/route"
 function App() {
-  const routeElements = useRouteElements()
   return (
     <>
-
-      {routeElements}
-      <Toaster />
+      <RouterProvider router={router} />
     </>
   )
 }

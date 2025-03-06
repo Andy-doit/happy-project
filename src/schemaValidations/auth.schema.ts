@@ -1,34 +1,35 @@
 
-import { RoleValues } from '@/app/constrants/type'
 import z from 'zod'
 
-
+const stringSchema = z.string()
 export const LoginBody = z
     .object({
-        username: z.string({
-            required_error: "Bạn chưa nhập tên tài khoản"
-        }).min(1, "Bạn chưa nhập tên tài khoản"),
-        password: z.string({
-            required_error: "Bạn chưa nhập mật khẩu"
-        }).min(1, "Bạn chưa nhập mật khẩu")
+        username: stringSchema,
+        password: stringSchema.min(6).max(20)
     })
     .strict()
 
 export type LoginBodyType = z.TypeOf<typeof LoginBody>
 
 export const LoginRes = z.object({
+    message: z.string(),
     data: z.object({
-        accessToken: z.string(),
-        refreshToken: z.string(),
-        account: z.object({
-            id: z.number(),
+        admin: z.object({
+            id: z.string(),
             username: z.string(),
-            role: z.enum(RoleValues)
-        })
-    }),
-    message: z.string()
-})
+            firstName: z.string(),
+            lastName: z.string(),
+            role: z.string(),
+            status: z.string(),
+            email: z.string(),
 
+        }),
+        tokens: z.object({
+            accessToken: z.string(),
+            refreshToken: z.string()
+        })
+    })
+});
 export type LoginResType = z.TypeOf<typeof LoginRes>
 
 export const RefreshTokenBody = z
