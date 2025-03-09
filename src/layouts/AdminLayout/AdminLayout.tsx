@@ -11,7 +11,6 @@ export default function AdminLayout({ children }: Props) {
     return (
         <SidebarProvider>
             <SidebarAdmin />
-
             <SidebarInset>
                 {children}
             </SidebarInset>

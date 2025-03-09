@@ -21,9 +21,9 @@ import {
     ScanSearch,
     SquareTerminal,
 } from "lucide-react"
+import { NavMain } from "./navMain"
+import { NavUser } from "./navUser"
 
-import { NavUser } from "./NavUser"
-import { NavMain } from "./NavMain"
 
 
 const data = {

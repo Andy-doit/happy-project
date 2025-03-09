@@ -14,21 +14,17 @@ export const useLogin = () => {
             if (!result.payload?.data?.admin?.role) {
                 throw new Error("Dữ liệu trả về từ server không hợp lệ");
             }
-
             toast.success(result.payload.message);
             const role = result.payload.data.admin.role;
-
             setIsAuth(true);
             setRole(role);
-
             if (!Object.values(ROLE).includes(role)) {
                 toast.error("Vai trò không hợp lệ!");
                 navigate("/error");
                 return;
             }
-
             if (role === ROLE.SUPER_ADMIN) {
-                navigate("/dashboard");
+                navigate("/TestPage");
             } else if (role === ROLE.ADMIN) {
                 navigate("/Test");
             } else {
