@@ -5,15 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/inputField";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useLogin } from "@/hooks/useAuth";
 
-
 export default function Login() {
-    const navigate = useNavigate();
-    const { handleLogin } = useLogin();
-    const [isPending, setIsPending] = useState(false);
+    const { loginMutation } = useLogin();
 
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
@@ -23,18 +18,9 @@ export default function Login() {
         },
     });
 
-    async function onSubmit(values: LoginBodyType) {
-        if (isPending) return;
-        setIsPending(true);
-        try {
-            await handleLogin(values, navigate);
-        } catch (error) {
-            console.error("Login failed:", error);
-        } finally {
-            setIsPending(false);
-        }
-    }
-
+    const onSubmit = (values: LoginBodyType) => {
+        loginMutation.mutate({ values });
+    };
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
@@ -68,9 +54,9 @@ export default function Login() {
                                 type="submit"
                                 className="w-full"
                                 variant="secondary"
-                                disabled={isPending}
+                                disabled={loginMutation.isPending}
                             >
-                                {isPending ? "Đang đăng nhập..." : "Đăng nhập"}
+                                {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}
                             </Button>
                         </div>
                     </form>
