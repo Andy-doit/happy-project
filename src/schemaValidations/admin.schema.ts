@@ -1,9 +1,6 @@
 
 import z from 'zod'
 
-
-
-
 export const ArticleSchema = z.object({
     id: z.string(),
     slug: z.string(),
@@ -35,17 +32,10 @@ export const ArticleRes = z.object({
     data: ArticleSchema,
     message: z.string()
 })
-
-export type ArticleResType = z.TypeOf<typeof ArticleRes>
-
 export const ArticleListRes = z.object({
     data: z.array(ArticleSchema),
     message: z.string()
 })
-
-export type ArticleListResType = z.TypeOf<typeof ArticleListRes>
-
-
 export const ArticleParams = z.object({
     page: z.number(),
     limit: z.number(),
@@ -53,8 +43,6 @@ export const ArticleParams = z.object({
         id: z.number(),
         status: z.string(),
         author: z.string(),
-
-
     })
 })
-export type ArticleParamsType = z.TypeOf<typeof ArticleParams>
+

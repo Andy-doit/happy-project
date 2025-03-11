@@ -1,30 +1,30 @@
 import { Navigate } from "react-router-dom";
 import React from "react";
 import { ErrorPage } from "@/pages/error/errorPage";
-import { useAuthStore } from "@/hooks/store";
 
 interface PrivateRouteProps {
-    inverted?: boolean; 
-    children: React.ReactNode;
-    requiredRoles?: string[];
+  children: React.ReactNode;
+  requiredRoles?: string[];
+  isLoginPage?: boolean; // Thêm prop để kiểm tra trang login
 }
 
-const PrivateRoute = ({ inverted = false, children, requiredRoles }: PrivateRouteProps) => {
-    const { isAuth, role } = useAuthStore();
-    if (inverted) {
-        return isAuth ? <Navigate to="/" /> : children;
-    }
+const PrivateRoute = ({ children, requiredRoles, isLoginPage }: PrivateRouteProps) => {
+  const isAuth = localStorage.getItem("accessToken");
+  const role = localStorage.getItem("ROLE_USER");
 
-    if (!isAuth) {
-        return <Navigate to="/login" />;
-    }
+  if (isAuth && isLoginPage) {
+    return <ErrorPage />;
+  }
 
+  if (!isAuth && !isLoginPage) {
+    return <Navigate to="/login" />;
+  }
 
-    if (requiredRoles && role && !requiredRoles.some((r) => role === r)) {
-        return <ErrorPage />;
-    }
+  if (requiredRoles && role && !requiredRoles.includes(role)) {
+    return <ErrorPage />;
+  }
 
-    return children;
+  return children;
 };
 
 export default PrivateRoute;

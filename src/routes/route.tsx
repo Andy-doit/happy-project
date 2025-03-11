@@ -21,9 +21,10 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: (
-            <PrivateRoute inverted={true}>
+            <PrivateRoute isLoginPage={true}>
                 <Login />
             </PrivateRoute>
+
         ),
     },
     {
@@ -41,8 +42,8 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <PrivateRoute>
-                <div>Welcome to Home</div> // Thay bằng component Home nếu có
+            <PrivateRoute requiredRoles={[ROLE.ADMIN]} >
+                <div>Welcome to Home</div>
             </PrivateRoute>
         ),
     },

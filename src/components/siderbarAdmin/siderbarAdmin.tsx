@@ -1,5 +1,3 @@
-
-
 import {
     Sidebar,
     SidebarContent,
@@ -8,12 +6,9 @@ import {
 } from "@/components/ui/sidebar"
 
 import {
-    AudioWaveform,
     MessageSquareMore,
     UsersRound,
-    Command,
     Newspaper,
-    GalleryVerticalEnd,
     ChartBarStacked,
     Package,
     TicketPercent,
@@ -23,8 +18,6 @@ import {
 } from "lucide-react"
 import { NavMain } from "./navMain"
 import { NavUser } from "./navUser"
-
-
 
 const data = {
     user: {
