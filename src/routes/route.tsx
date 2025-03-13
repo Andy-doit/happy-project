@@ -43,7 +43,10 @@ export const router = createBrowserRouter([
         path: "/",
         element: (
             <PrivateRoute requiredRoles={[ROLE.ADMIN]} >
-                <div>Welcome to Home</div>
+                <AdminLayout>
+                    <div>Welcome to Home</div>
+                </AdminLayout>
+
             </PrivateRoute>
         ),
     },

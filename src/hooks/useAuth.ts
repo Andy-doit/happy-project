@@ -1,11 +1,11 @@
 import authApiRequest from "../apiRequest/auth";
 import { toast } from "sonner";
-import { handleErrorApi } from "@/lib/utils";
-import { LoginBodyType } from "@/schemaValidations/auth.schema";
-import { ROLE } from "@/contansts/type";
+
+import { LoginBodyType, ROLE } from "@/contansts/type";
 import { useAuthStore } from "@/hooks/store";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { handleErrorApi } from "@/lib/errorHandle";
 
 export const useLogin = () => {
     const { setIsAuth, setRole } = useAuthStore();
