@@ -1,3 +1,4 @@
+import { FormActionType, IDLE, IDLE_FORM, UserItemProps } from "@/contansts/type";
 import { create } from "zustand";
 
 interface AuthState {
@@ -13,3 +14,17 @@ export const useAuthStore = create<AuthState>((set) => ({
     setIsAuth: (value) => set({ isAuth: value }),
     setRole: (role) => set({ role }),
 }));
+
+interface UserStoreState {
+    modalType: FormActionType;
+    setModalType: (type: FormActionType) => void;
+    userSelected: UserItemProps | null;
+    setUserSelected: (user: UserItemProps | null) => void;
+}
+export const useUserStore = create<UserStoreState>((set) => ({
+    modalType: IDLE_FORM,
+    setModalType: (modalType) => set({ modalType }),
+    userSelected: null,
+    setUserSelected: (userSelected) => set({ userSelected }),
+}));
+

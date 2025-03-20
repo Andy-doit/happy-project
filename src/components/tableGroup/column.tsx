@@ -1,22 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArticleListResType } from "@/contansts/type";
+import { ArticleListResType, FormActionType, EDIT_FORM, DELETE_FORM } from "@/contansts/type";
 import { Badge } from "../ui/badge";
-import ActionButton from "./actionButton";
-
+import { Button } from "../ui/button";
+import { Pencil, Trash } from "lucide-react";
 
 type Article = ArticleListResType["data"][number];
-interface GetArticleColumnsProps {
-  actions?: {
-    icon: React.ReactNode;
-    action: (article: Article) => void;
-    variant?: "default" | "outline" | "destructive";
-    modalTitle?: string;
-    modalContent?: (article: Article) => React.ReactNode;
-    modalId?: (article: Article) => string;
-  }[];
-}
 
-export function getArticleColumns({ actions = [] }: GetArticleColumnsProps): ColumnDef<Article>[] {
+export function getArticleColumns(
+  setModalType: (type: FormActionType) => void,
+  setSelectedArticle: (article: Article | null) => void
+): ColumnDef<Article>[] {
   return [
     { accessorKey: "id", header: "ID" },
     { accessorKey: "title", header: "Title" },
@@ -24,7 +17,8 @@ export function getArticleColumns({ actions = [] }: GetArticleColumnsProps): Col
     { accessorKey: "category", header: "Category" },
     { accessorKey: "createdAt", header: "Created Date" },
     {
-      accessorKey: "status", header: "Status",
+      accessorKey: "status",
+      header: "Status",
       cell: ({ row }) => {
         const status = row.original.status;
         return (
@@ -43,27 +37,39 @@ export function getArticleColumns({ actions = [] }: GetArticleColumnsProps): Col
       },
     },
     {
-      id: "actions",
+      accessorKey: "actions",
       header: "Actions",
       cell: ({ row }) => {
         const article = row.original;
 
         return (
-          <div className="flex space-x-2">
-            {actions.map((action, index) => (
-              <ActionButton
-                key={index}
-                icon={action.icon}
-                onClick={() => action.action(article)}
-                variant={action.variant}
-                modalId={action.modalId ? action.modalId(article) : `article-modal-${action.modalTitle?.toLowerCase()}-${article.id}`}
-                modalTitle={action.modalTitle}
-                modalContent={action.modalContent ? action.modalContent(article) : undefined}
-              />
-            ))}
+          <div className="flex">
+            <Button
+              size="icon"
+              onClick={() => {
+                console.log("Opening edit modal...", article);
+
+                setModalType(EDIT_FORM);
+              }}
+            >
+              <Pencil />
+            </Button>
+            <Button
+              className="ml-3"
+              size="icon"
+              variant="destructive"
+              onClick={() => {
+                console.log("Opening delete modal...", article);
+
+                setModalType(DELETE_FORM);
+              }}
+            >
+              <Trash />
+            </Button>
           </div>
         );
       },
     },
   ];
 }
+

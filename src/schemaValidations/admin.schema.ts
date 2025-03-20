@@ -2,6 +2,20 @@
 import z from 'zod'
 import { format, parseISO } from "date-fns";
 
+
+export const ArticleBody = z.object({
+    title: z.string(),
+    content: z.string(),
+    picture: z.string(),
+    status: z.string(),
+    type: z.string(),
+    timeToRead: z.number(),
+    categoryId: z.string(),
+    author: z.string(),
+
+});
+
+
 export const ArticleSchema = z.object({
     id: z.string(),
     slug: z.string(),
@@ -38,5 +52,18 @@ export const ArticleParams = z.object({
     page: z.number(),
     limit: z.number(),
 
+})
+export const CategoriesSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    title: z.string()
+})
+export const CategoriesRes = z.object({
+    data: CategoriesSchema,
+    message: z.string()
+})
+export const CategoriesListRes = z.object({
+    data: z.array(CategoriesSchema),
+    message: z.string()
 })
 

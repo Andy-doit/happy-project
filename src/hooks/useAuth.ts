@@ -20,7 +20,7 @@ export const useLogin = () => {
             }
             toast.success(result.payload.message);
             const role = result.payload.data.admin.role;
-            localStorage.setItem("ROLE_USER", role);
+            localStorage.setItem("ROLE_USER", role); 
             setIsAuth(true);
             setRole(role);
 

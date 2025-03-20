@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SidebarAdmin from "@/components/siderbarAdmin/siderbarAdmin";
 import { DataTable } from "@/components/tableGroup/data-table";
 import { getArticleColumns } from "@/components/tableGroup/column";
@@ -7,12 +7,17 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import adminApiRequest from "@/apiRequest/admin";
 import { ArticleListResType } from "@/contansts/type";
 import { ArticleListRes } from "@/schemaValidations/admin.schema";
-import { Eye, PencilIcon, Trash } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/hooks/store";
+import { UserModal } from "@/components/modal/userModal";
+
 
 export default function TestPage() {
     const [data, setData] = useState<ArticleListResType["data"]>([]);
     const [loading, setLoading] = useState(true);
+
+    const { setModalType } = useUserStore();
+    const columns = useMemo(() => getArticleColumns(setModalType), [setModalType]);
+
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -40,53 +45,14 @@ export default function TestPage() {
             <SidebarAdmin />
             <SidebarInset>
                 {loading ? <p>Loading...</p> : (
-                    <DataTable
-                        columns={getArticleColumns({
-                            actions: [
-                                {
-                                    icon: <Eye className="w-4 h-4" />,
-                                    action: (article) => console.log("View:", article),
-                                    variant: "outline",
-                                    modalId: (article) => `view-${article.id}`,  // Dùng hàm
-                                    modalTitle: "Article Details",
-                                    modalContent: (article) => (  // Đổi thành hàm nhận article
-                                        <div>
-                                            <p><strong>Title:</strong> {article.title}</p>
-                                            <p><strong>Author:</strong> {article.author}</p>
-                                            <p><strong>Category:</strong> {article.category}</p>
-                                            <p><strong>Created At:</strong> {article.createdAt}</p>
-                                            <p><strong>Status:</strong> {article.status}</p>
-                                        </div>
-                                    ),
-                                },
-                                {
-                                    icon: <PencilIcon className="w-4 h-4" />,
-                                    action: (article) => console.log("Update:", article),
-                                    variant: "outline",
-                                    modalId: (article) => `edit-${article.id}`,  // Dùng hàm
-                                    modalTitle: "Edit Article",
-                                    modalContent: (article) => (  // Đổi thành hàm nhận article
-                                        <>
-                                            <Input defaultValue={article.title} />
-                                        </>
-                                    ),
-                                },
-                                {
-                                    icon: <Trash className="w-4 h-4" />,
-                                    action: (article) => console.log("Delete:", article),
-                                    variant: "outline",
-                                    modalId: (article) => `delete-${article.id}`,  // Dùng hàm
-                                    modalTitle: "Confirm Delete",
-                                    modalContent: (article) => (  // Đổi thành hàm nhận article
-                                        <p>Are you sure you want to delete "{article.title}"?</p>
-                                    ),
-                                },
-                            ],
-                        })}
-                        data={data}
-                    />
-
+                    <div>
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                        />
+                    </div>
                 )}
+                <UserModal />
             </SidebarInset>
         </SidebarProvider>
     );

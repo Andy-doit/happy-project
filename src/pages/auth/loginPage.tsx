@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
+import { LoginBody } from "@/schemaValidations/auth.schema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/inputField";
 import { useLogin } from "@/hooks/useAuth";
+import { LoginBodyType } from "@/contansts/type";
 
 export default function Login() {
     const { loginMutation } = useLogin();
@@ -53,7 +54,7 @@ export default function Login() {
                             <Button
                                 type="submit"
                                 className="w-full"
-                                variant="secondary"
+
                                 disabled={loginMutation.isPending}
                             >
                                 {loginMutation.isPending ? "Đang đăng nhập..." : "Đăng nhập"}

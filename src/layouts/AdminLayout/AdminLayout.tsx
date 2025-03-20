@@ -1,5 +1,6 @@
 
 
+
 import SidebarAdmin from "@/components/siderbarAdmin/siderbarAdmin";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
@@ -13,6 +14,7 @@ export default function AdminLayout({ children }: Props) {
             <SidebarAdmin />
             <SidebarInset>
                 {children}
+
             </SidebarInset>
         </SidebarProvider>
     )
