@@ -22,8 +22,8 @@ export function DeleteArticleModal() {
             return;
         }
 
-        const ids = [articleId];
-        console.log("Deleting articles with ids:", JSON.stringify(ids));
+        const ids = [articleId]; // ✅ Đảm bảo gửi mảng đúng
+        console.log("Formatted request payload:", JSON.stringify(ids)); // Kiểm tra request
 
         deleteArticleMutation.mutate(ids, {
             onSuccess: () => {
@@ -36,6 +36,7 @@ export function DeleteArticleModal() {
             }
         });
     };
+
 
 
     return (

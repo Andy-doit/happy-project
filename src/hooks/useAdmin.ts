@@ -51,7 +51,6 @@ export const useUpdateArticleMutation = () => {
 
 export const useDeleteArticleMutation = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (ids: string[]) => adminApiRequest.deleteArticle(ids),
     onSuccess: () => {
