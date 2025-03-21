@@ -21,7 +21,6 @@ export function InputField<T extends FieldValues>({
     required = false,
 }: CustomInputProps<T>) {
     return (
-        
         <FormField
             control={control}
             name={name}
@@ -34,7 +33,14 @@ export function InputField<T extends FieldValues>({
                             type={type}
                             placeholder={placeholder}
                             required={required}
-                            {...field}
+                            value={field.value ?? ""} 
+                            onChange={(e) => {
+                                if (type === "number") {
+                                    field.onChange(e.target.value === "" ? "" : Number(e.target.value));
+                                } else {
+                                    field.onChange(e.target.value);
+                                }
+                            }}
                         />
                         <FormMessage />
                     </div>

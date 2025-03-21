@@ -1,19 +1,20 @@
 import { useUserStore } from "@/hooks/store";
 import { useCallback } from "react";
-import { DeleteModal } from "./deleteModal";
-import { ADD_FORM, DELETE_FORM, EDIT_FORM } from "../../contansts/type";
-import AddEditUserDrawwer from "./addEditUserDrawer";
 
-export const UserModal = () => {
-    const { modalType } = useUserStore();
+import { ADD_FORM, DELETE_FORM, EDIT_FORM } from "../../contansts/type";
+import AddEditArticleDrawwer from "./addEditArticleDrawer";
+import { DeleteArticleModal } from "./deleteArticleModal";
+
+export const ArticleModal = () => {
+    const { modalType, articleId } = useUserStore();
     const renderModal = useCallback(() => {
         switch (modalType) {
             case ADD_FORM:
-                return <AddEditUserDrawwer isAdd />;
+                return <AddEditArticleDrawwer isAdd />;
             case EDIT_FORM:
-                return <AddEditUserDrawwer isAdd={false} />;
+                return <AddEditArticleDrawwer isAdd={false} articleId={articleId} />;
             case DELETE_FORM:
-                return <DeleteModal />;
+                return <DeleteArticleModal />;
             default:
                 return null;
         }

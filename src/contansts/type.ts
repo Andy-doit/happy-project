@@ -3,33 +3,32 @@ import { LoginBody, LoginRes, RefreshTokenBody, RefreshTokenRes } from "@/schema
 import { z } from "zod"
 
 export const ROLE = {
-    SUPER_ADMIN: "superAdmin",
-    ADMIN: 'admin',
+  SUPER_ADMIN: "superAdmin",
+  ADMIN: 'admin',
 
 }
 type ModalType = string;
 export interface ModalState {
-    activeModals: Record<ModalType, boolean>;
-    openModal: (modalType: ModalType) => void;
-    closeModal: (modalType: ModalType) => void;
-    toggleModal: (modalType: ModalType) => void;
-    isModalOpen: (modalType: ModalType) => boolean;
+  activeModals: Record<ModalType, boolean>;
+  openModal: (modalType: ModalType) => void;
+  closeModal: (modalType: ModalType) => void;
+  toggleModal: (modalType: ModalType) => void;
+  isModalOpen: (modalType: ModalType) => boolean;
 }
 export interface UserItemProps {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
+  id: string;
 }
 export interface AddEditDrawerProps {
-    isAdd: boolean;
+  isAdd: boolean;
+  articleId?: string;
 
 }
+
 export const ADD_FORM = "ADD";
 export const EDIT_FORM = "EDIT";
 export const DELETE_FORM = "DELETE";
 export const IDLE = "IDLE";
-
+export type ArticleDetailType = z.infer<typeof ArticleBody>;
 export type FormActionType = typeof ADD_FORM | typeof EDIT_FORM | typeof DELETE_FORM | typeof IDLE;
 export const IDLE_FORM: FormActionType = IDLE;
 export type ArticleResType = z.TypeOf<typeof ArticleRes>

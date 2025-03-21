@@ -3,12 +3,13 @@ import { ArticleListResType, FormActionType, EDIT_FORM, DELETE_FORM } from "@/co
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Pencil, Trash } from "lucide-react";
+import { useUserStore } from "@/hooks/store";
+
 
 type Article = ArticleListResType["data"][number];
 
 export function getArticleColumns(
-  setModalType: (type: FormActionType) => void,
-  setSelectedArticle: (article: Article | null) => void
+  openModal: (type: FormActionType, id: string) => void
 ): ColumnDef<Article>[] {
   return [
     { accessorKey: "id", header: "ID" },
@@ -41,16 +42,16 @@ export function getArticleColumns(
       header: "Actions",
       cell: ({ row }) => {
         const article = row.original;
-
+        const { setArticleId } = useUserStore();
         return (
           <div className="flex">
             <Button
               size="icon"
               onClick={() => {
-                console.log("Opening edit modal...", article);
-
-                setModalType(EDIT_FORM);
-              }}
+                openModal(EDIT_FORM, article.id)
+                setArticleId(article.id);
+              }
+              }
             >
               <Pencil />
             </Button>
@@ -59,17 +60,17 @@ export function getArticleColumns(
               size="icon"
               variant="destructive"
               onClick={() => {
-                console.log("Opening delete modal...", article);
-
-                setModalType(DELETE_FORM);
-              }}
-            >
+                openModal(DELETE_FORM, article.id);
+                setArticleId(article.id);
+              }
+              }>
               <Trash />
             </Button>
-          </div>
+          </div >
         );
       },
     },
   ];
 }
+
 
