@@ -1,23 +1,22 @@
-import { useMemo } from "react";
-import SidebarAdmin from "@/components/siderbarAdmin/siderbarAdmin";
-import { DataTable } from "@/components/tableGroup/data-table";
-import { getArticleColumns } from "@/components/tableGroup/column";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
-import { useUserStore } from "@/hooks/store";
-import { ArticleModal } from "@/components/articleModal/articleModal";
-import { useArticles } from "@/hooks/useAdmin";
-import AdminListHeader from "@/components/adminListHeader";
+import { useState, useMemo } from "react";
 import PageHeader from "@/components/adminListHeader";
-import SearchInput from "@/components/searchInput";
-import { Button } from "@/components/ui/button";
+import { ArticleModal } from "@/components/articleModal/articleModal";
+import { PaginationDemo } from "@/components/pagination";
+import SidebarAdmin from "@/components/siderbarAdmin/siderbarAdmin";
+import { getArticleColumns } from "@/components/tableGroup/column";
+import { DataTable } from "@/components/tableGroup/data-table";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ADD_FORM } from "@/contansts/type";
-
+import { useUserStore } from "@/hooks/store";
+import { useArticles } from "@/hooks/useAdmin";
 
 export default function TestPage() {
   const { setModalType } = useUserStore();
   const columns = useMemo(() => getArticleColumns(setModalType), [setModalType]);
-  const { data, isLoading } = useArticles();
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const limit = 10;
+  const { data, isLoading } = useArticles(page, limit, searchTerm);
 
   return (
     <SidebarProvider>
@@ -25,24 +24,21 @@ export default function TestPage() {
       <SidebarInset>
         <PageHeader
           title="Article"
-          actions={() => (
-            <div className="w-full flex justify-between">
-              <Button
-                onClick={() => setModalType(ADD_FORM)}
-
-              >
-                Add
-              </Button>
-            </div>
-          )}
+          buttonLabel="Add Article"
+          onSearch={setSearchTerm}
+          onButtonClick={() => setModalType(ADD_FORM)}
         />
-        {isLoading ? <p>Loading...</p> : (
-          <div>
-            <DataTable
-              columns={columns}
-              data={data?.data || []}
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <DataTable columns={columns} data={data?.data || []} />
+            <PaginationDemo
+              currentPage={page}
+              totalPages={data?.metadata.totalPages || 1}
+              onPageChange={setPage}
             />
-          </div>
+          </>
         )}
         <ArticleModal />
       </SidebarInset>

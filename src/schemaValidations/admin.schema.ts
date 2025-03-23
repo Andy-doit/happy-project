@@ -44,7 +44,13 @@ export const ArticleSchema = z.object({
     return format(date, "dd/MM/yyyy HH:mm");
   }),
   type: z.string(),
-
+});
+export const MetadataSchema = z.object({
+  page: z.number(),
+  limit: z.number(),
+  totalPages: z.number(),
+  totalCount: z.number(),
+  hasNextPage: z.boolean(),
 });
 
 export const ArticleRes = z.object({
@@ -53,8 +59,9 @@ export const ArticleRes = z.object({
 })
 export const ArticleListRes = z.object({
   data: z.array(ArticleSchema),
-  message: z.string()
-})
+  message: z.string(),
+  metadata: MetadataSchema, 
+});
 export const ArticleParams = z.object({
   page: z.number(),
   limit: z.number(),

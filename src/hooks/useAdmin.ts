@@ -4,18 +4,21 @@ import { ArticleListRes } from "@/schemaValidations/admin.schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
-export const useArticles = () => {
+export const useArticles = (page: number, limit: number, search: string) => {
   return useQuery<ArticleListResType>({
-    queryKey: ["articles"],
+    queryKey: ["articles", page, limit, search],
     queryFn: async () => {
-      const response = await adminApiRequest.listArticle();
-
+      const response = await adminApiRequest.listArticle({
+        page,
+        limit,
+        search,
+      });
 
       return ArticleListRes.parse(response.payload);
     },
+    placeholderData: (previousData) => previousData,
   });
 };
-
 export const useArticleById = (articleId?: string) => {
   return useQuery<ArticleResType, Error>({
     queryKey: ["article", articleId],
